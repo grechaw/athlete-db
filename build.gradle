@@ -24,6 +24,11 @@ ext {
     }
 }
 
+task runExample(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.marklogic.athletedb.AthleteDb'
+}
+
 task genCode(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.marklogic.athletedb.CodeGenerator'

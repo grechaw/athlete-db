@@ -1,0 +1,35 @@
+{
+  "info":{
+    "title":"AthleteDb",
+    "version":"0.0.1",
+    "description":"An example model that builds a database of athletes from Tamas's data"
+  },
+  "definitions": {
+    "Player" : {
+      "properties": {
+        "name": {"datatype":"string"},
+        "position": {"datatype":"string"},
+        "jerseyNumber": {"datatype":"positiveInteger", "description": "Not really an integer, but looks like one"},
+        "dateOfBirth":  {"datatype":"date"},
+        "nationality": {"datatype":"string"},
+        "contractUntil": {"datatype":"date"},
+        "marketValue": {"datatype":"long"},
+        "team": {"$ref":"#/definitions/Team"}
+      },
+      "primaryKey": "name",
+      "required":["name","position","nationality","marketValue","team"],
+      "rangeIndex":["name","position","teamId"]
+    },
+    "Team" : {
+      "properties": {
+        "name": {"datatype":"string"},
+        "id": {"datatype":"integer"},
+        "crest": {"datatype":"iri"},
+        "value": {"datatype":"long"}
+      },
+      "primaryKey" : "id",
+      "required" : ["name", "value"]
+    }
+  }
+}
+

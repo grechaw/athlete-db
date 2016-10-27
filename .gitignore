@@ -1,0 +1,12 @@
+.*.sw?
+.classpath
+.DS_Store
+.gradle
+.idea
+.project
+.settings
+*.iml
+*/build/
+/bin/
+/build/
+classes
