@@ -1,0 +1,34 @@
+plugins {
+    id "com.marklogic.ml-gradle" version "2.3.4"
+}
+
+apply plugin: 'com.marklogic.ml-gradle'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+  compile('com.marklogic:java-client-api:4.0-SNAPSHOT') {
+    exclude(group: 'com.google.guava')
+  }
+  compile('ch.qos.logback:logback-classic:1.1.7')
+}
+
+ext {
+    mlAppConfig {
+        createTriggersDatabase = false
+    }
+}
+
+task genCode(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.marklogic.athletedb.CodeGenerator'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+}

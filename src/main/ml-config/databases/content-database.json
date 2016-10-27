@@ -1,0 +1,12 @@
+{
+    "collection-lexicon": true,
+    "database-name": "%%DATABASE%%",
+    "path-namespace": [
+        {
+            "namespace-uri": "http://marklogic.com/entity-services",
+            "prefix": "es"
+        }
+    ],
+    "schema-database": "%%SCHEMAS_DATABASE%%",
+    "triple-index": true
+}
