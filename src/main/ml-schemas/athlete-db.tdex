@@ -75,11 +75,13 @@ graph uri: http://example.org/AthleteDb-0.0.1</description>
 	      <name>jerseyNumber</name>
 	      <scalar-type>positiveInteger</scalar-type>
 	      <val>jerseyNumber</val>
+	      <nullable>true</nullable>
 	    </column>
 	    <column>
 	      <name>dateOfBirth</name>
 	      <scalar-type>date</scalar-type>
 	      <val>dateOfBirth</val>
+	      <nullable>true</nullable>
 	    </column>
 	    <column>
 	      <name>nationality</name>
@@ -98,16 +100,16 @@ graph uri: http://example.org/AthleteDb-0.0.1</description>
 	      <val>marketValue</val>
 	    </column>
 	    <column>
-	      <name>teamId</name>
+	      <name>team</name>
 	      <scalar-type>integer</scalar-type>
-	      <val>teamId/Team</val>
+	      <val>team/Team/id</val>
 	    </column>
 	  </columns>
 	</row>
       </rows>
     </template>
     <template xmlns:tde="http://marklogic.com/xdmp/tde">
-      <context>./Team</context>
+      <context>Player/team/Team</context>
       <vars>
 	<var>
 	  <name>subject-iri</name>
@@ -140,7 +142,7 @@ graph uri: http://example.org/AthleteDb-0.0.1</description>
       </triples>
     </template>
     <template xmlns:tde="http://marklogic.com/xdmp/tde">
-      <context>./Team</context>
+      <context>Player/team/Team</context>
       <rows>
 	<row>
 	  <schema-name>AthleteDb</schema-name>
