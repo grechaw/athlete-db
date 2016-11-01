@@ -6,19 +6,18 @@ import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.datamovement.*;
 import com.marklogic.client.document.ServerTransform;
 import com.marklogic.client.io.DocumentMetadataHandle;
+import com.marklogic.client.io.FileHandle;
+import com.marklogic.client.io.Format;
 import com.marklogic.client.io.InputStreamHandle;
 import com.marklogic.client.query.QueryDefinition;
-import com.marklogic.client.query.QueryManager;
 import com.marklogic.client.query.StructuredQueryBuilder;
-import com.marklogic.client.semantics.SPARQLQueryDefinition;
-import com.marklogic.client.semantics.SPARQLQueryManager;
+import com.marklogic.client.query.StructuredQueryDefinition;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -80,9 +79,9 @@ public class AthleteDb {
         client.newJSONDocumentManager().write("/athlete-db.json", metadata, handle);
     }
 
-    public void getPlayerIris() throws InterruptedException {
+    public void harmonize() throws InterruptedException {
         StructuredQueryBuilder qb = new StructuredQueryBuilder();
-        QueryDefinition qdef = qb.collection("players");
+        StructuredQueryDefinition qdef = qb.collection("players");
         DataMovementManager stageMgr = stagingCient.newDataMovementManager();
         ServerTransform harmonizer = new ServerTransform("football-harmonizer");
         ApplyTransformListener listener = new ApplyTransformListener().withTransform(harmonizer)
@@ -103,10 +102,29 @@ public class AthleteDb {
         stageMgr.stopJob(queryBatcher);
     }
 
+    public void loadData() {
+        DataMovementManager mvMgr = stagingCient.newDataMovementManager();
+        WriteBatcher batcher = mvMgr.newWriteBatcher()
+                .withBatchSize(100)
+                .withThreadCount(5)
+                .onBatchSuccess((client, batch) -> { logger.debug("SUCCESS, loaded " + batch.getJobWritesSoFar()); })
+                .onBatchFailure((client, batch, failure) -> { logger.error("FAILURE on batch:" + batch.toString() + "\n", failure); });
+
+
+        for (File f : FileUtils.listFiles(new File("data"),
+                FileFilterUtils.trueFileFilter(), FileFilterUtils.trueFileFilter())) {
+            batcher.add(f.getName(), new FileHandle(f).withFormat(Format.JSON));
+        };
+
+        batcher.flushAndWait();
+
+    }
+
     public static void main(String[] args) throws InterruptedException {
         AthleteDb adb = new AthleteDb();
         adb.loadModel();
-        adb.getPlayerIris();
+        adb.loadData();
+        adb.harmonize();
 
     }
 

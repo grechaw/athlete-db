@@ -1,0 +1,74 @@
+<export><workspace name="ES athletedb"><query name="Model SPARQL" focus="false" listorder="1" taborder="1" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="sparql">prefix es: &lt;http://marklogic.com/entity-services#&gt;
+
+select ?title ?version ?etTitle ?propTitle
+where 
+{
+  ?model a es:Model ;
+           es:title ?title ;
+           es:version ?version ;
+           es:definitions ?definitions .
+  ?definitions es:property ?property ;
+               es:title ?etTitle .
+  ?property es:title ?propTitle 
+}</query><query name="validation" focus="false" listorder="2" taborder="2" active="true" database="12117036426806995207" server="4801718746833671453" database-name="Documents" server-name="athletedb" mode="xquery">xquery version "1.0-ml";
+
+import module namespace es = "http://marklogic.com/entity-services" at "/MarkLogic/entity-services/entity-services.xqy"; 
+
+(for $x in (//es:instance/Player)
+let $errors := xdmp:validate($x)
+where exists($errors/node())
+return (base-uri($x), $errors/node())
+)[1 to 10]</query><query name="Instance SPARQL" focus="false" listorder="3" taborder="3" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="sparql">prefix es: &lt;http://marklogic.com/entity-services#&gt;
+prefix fn: &lt;http://www.w3.org/2005/xpath-functions#&gt;
+prefix cts: &lt;http://marklogic.com/cts#&gt;
+prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+select ?instance ?docUri ?type ?doc
+where 
+{
+  ?instance a ?type ;
+            rdfs:isDefinedBy ?docUri .
+  ?model a es:Model ;
+         es:definitions ?type .
+  BIND  (fn:doc(?docUri) as ?doc)
+#  FILTER (cts:contains(?doc, "Moreno"))
+}
+limit 2
+</query><query name="TDE Extraction" focus="false" listorder="4" taborder="5" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">fn:doc("/player/alexanderringa.ring.xml"),
+tde:node-data-extract(doc("/player/alexanderringa.ring.xml"))
+,
+"\share\git\athlete-db\src\main\ml-schemas\athlete-db.tdex"
+=&gt;replace("\\","/")
+=&gt;xdmp:filesystem-file()
+=&gt;xdmp:unquote()
+=&gt;(function($x) { tde:validate($x/node()) })()</query><query name="SQL" focus="false" listorder="5" taborder="7" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="sql">SELECT p.name, t.name
+from AthleteDb.Team t,
+AthleteDb.Player p
+where t.id = p.team
+LIMIT 10</query><query name="Optic" focus="true" listorder="6" taborder="6" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">import module namespace op = "http://marklogic.com/optic" at "/MarkLogic/optic.xqy";
+
+let $p := op:from-view("AthleteDb", "Player")
+let $t := op:from-view("AthleteDb", "Team")
+return $p=&gt;op:join-inner($t, op:on("team", "id"))
+=&gt;op:limit(10)=&gt;op:result()</query><query name="Instance Optic" focus="false" listorder="7" taborder="4" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">import module namespace op = "http://marklogic.com/optic" at "/MarkLogic/optic.xqy";
+import module namespace ofn= "http://marklogic.com/optic/expression/fn" at "/MarkLogic/optic/optic-fn.xqy";
+import module namespace oxs="http://marklogic.com/optic/expression/xs" at "/MarkLogic/optic/optic-xs.xqy";
+
+let $model := op:col("model")
+let $instance := op:col("instance")
+let $doc-uri := op:col("docUri")
+let $type := op:col("type")
+
+let $es := op:prefixer("http://marklogic.com/entity-services#")
+let $rdf := op:prefixer("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+let $rdfs := op:prefixer("http://www.w3.org/2000/01/rdf-schema#")
+
+let $p := op:from-triples(
+  (
+   op:pattern($instance, $rdf("type"), $type),
+   op:pattern($model, $es("definitions"), $type),
+   op:pattern($model, $rdf("type"), $es("Model")),
+   op:pattern($instance, $rdfs("isDefinedBy"), $doc-uri)
+  ))
+  =&gt;op:where(ofn:contains($instance, oxs:string("Moreno")))
+return $p=&gt;op:result()</query><query name="Query 1" focus="false" listorder="8" taborder="" active="false" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">(//Team)[1 to 10]</query></workspace></export>
