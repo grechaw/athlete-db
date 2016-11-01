@@ -123,7 +123,7 @@ public class AthleteDb {
     public static void main(String[] args) throws InterruptedException {
         AthleteDb adb = new AthleteDb();
         adb.loadModel();
-        adb.loadData();
+        // adb.loadData();
         adb.harmonize();
 
     }
