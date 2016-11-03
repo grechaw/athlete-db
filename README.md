@@ -1,30 +1,13 @@
-AthleteDb
----------
+Step 2.
 
-Steps toward making this example.
+The instance converter has been edited, and a REST transform created that calls its code.
+Now one can deploy the new modules and run the example again to see the process of creating
+canonical envelopes from source data.
 
-* Loaded Tamas's data
-* created entity descriptor based on his data.
+`./gradlew mlReloadModules`
 
-two entity types, noting that nationality could link to other type, position too.
+loads the instance converter and harmonizing transformer into the modules database.
 
-so once that's loaded (gradle task run) you can do the codeGen task and get out thingys.
+`./gradlew runExample`
 
-(TODO make branches for each step)
-branch step1 will just have the model and java code.
-
-branch step2 has generated artifacts
-
-branch step3 has edited stuff.
-
-
-in making transform, it occurs to me that a harmonize connection expects modules to be
-available, but working on staging database.  so we use a connection to appserver that overrides
-with database name of staging to do queries, then the in-place transform does an eval into prod
-
-missing values from source requies logic -- null-node was a special new one for this particular
-dataset
-
-
-Team TDE needed extra step to go to denormalized doc.
 
