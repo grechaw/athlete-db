@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Class to call an extension that generates code for
@@ -33,18 +34,21 @@ public class CodeGenerator extends ResourceManager {
 
     private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
     private static String NAME = "generate-artifacts";
+    private Properties props;
     private DatabaseClient client;
+    private String codegenDir;
 
     public CodeGenerator() throws IOException {
         super();
-        client = AthleteDb.newClient();
+        client = AthleteDb.prodClient();
+        props = AthleteDb.props;
         client.init(NAME, this);
     }
 
     public void generate() {
         logger.info("Generating fresh artifacts for examples");
         RequestParameters parameters = new RequestParameters();
-        parameters.add("codegen-dir", "/share/");
+        parameters.add("codegen-dir", props.getProperty("codegenDir"));
 
         StringHandle input = new StringHandle().with("{}").withFormat(Format.JSON);
 
