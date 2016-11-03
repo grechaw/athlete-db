@@ -14,3 +14,5 @@ Running `./gradlew runExample` loads this model.
 Running `./gradlew genCode` executes Entity Services methods on the model to generate code stubs.
 
 Note there's a property in application.proeprties to set: `codegenDir`
+
+In this step, we see the artifacts created by Entity Services code generation.
