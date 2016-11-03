@@ -1,10 +1,3 @@
 {"database-name":"%%DATABASE%%",
-  "schema-database":"%%SCHEMAS_DATABASE%%",
-  "path-namespace":[{"prefix":"es", "namespace-uri":"http://marklogic.com/entity-services"}],
-  "element-word-lexicon":[],
-  "range-path-index":[
-    {"collation":"http://marklogic.com/collation/en", "invalid-values":"reject", "path-expression":"//es:instance/Player/name", "range-value-positions":false, "scalar-type":"string"},
-    {"collation":"http://marklogic.com/collation/en", "invalid-values":"reject", "path-expression":"//es:instance/Player/position", "range-value-positions":false, "scalar-type":"string"},
-    {"collation":"http://marklogic.com/collation/en", "invalid-values":"reject", "path-expression":"//es:instance/Player/teamId", "range-value-positions":false, "scalar-type":"decimal"}],
-  "triple-index":true, "collection-lexicon":true
+  "schema-database":"%%SCHEMAS_DATABASE%%"
 }
