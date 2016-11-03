@@ -1,16 +1,16 @@
-<export><workspace name="ES athletedb"><query name="Model SPARQL" focus="false" listorder="1" taborder="1" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="sparql">prefix es: &lt;http://marklogic.com/entity-services#&gt;
+<export><workspace name="ES athletedb"><query name="Model SPARQL" focus="false" listorder="1" taborder="1" active="true" database="16288912151872857378" server="8346355397661082885" database-name="athletedb-content" server-name="athletedb" mode="sparql">prefix es: &lt;http://marklogic.com/entity-services#&gt;
 
 select ?title ?version ?etTitle ?propTitle
 where 
 {
-  ?model a es:Model ;
-           es:title ?title ;
-           es:version ?version ;
-           es:definitions ?definitions .
+  ?model       a es:Model ;
+               es:title ?title ;
+               es:version ?version ;
+               es:definitions ?definitions .
   ?definitions es:property ?property ;
                es:title ?etTitle .
-  ?property es:title ?propTitle 
-}</query><query name="validation" focus="false" listorder="2" taborder="2" active="true" database="12117036426806995207" server="4801718746833671453" database-name="Documents" server-name="athletedb" mode="xquery">xquery version "1.0-ml";
+  ?property    es:title ?propTitle 
+}</query><query name="validation" focus="false" listorder="2" taborder="2" active="true" database="11559005008716464882" server="15220876757699439715" database-name="Documents" server-name="App-Services" mode="xquery">xquery version "1.0-ml";
 
 import module namespace es = "http://marklogic.com/entity-services" at "/MarkLogic/entity-services/entity-services.xqy"; 
 
@@ -18,7 +18,7 @@ import module namespace es = "http://marklogic.com/entity-services" at "/MarkLog
 let $errors := xdmp:validate($x)
 where exists($errors/node())
 return (base-uri($x), $errors/node())
-)[1 to 10]</query><query name="Instance SPARQL" focus="false" listorder="3" taborder="3" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="sparql">prefix es: &lt;http://marklogic.com/entity-services#&gt;
+)[1 to 10]</query><query name="Instance SPARQL" focus="false" listorder="3" taborder="3" active="true" database="16288912151872857378" server="8346355397661082885" database-name="" server-name="" mode="sparql">prefix es: &lt;http://marklogic.com/entity-services#&gt;
 prefix fn: &lt;http://www.w3.org/2005/xpath-functions#&gt;
 prefix cts: &lt;http://marklogic.com/cts#&gt;
 prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
@@ -34,23 +34,23 @@ where
 #  FILTER (cts:contains(?doc, "Moreno"))
 }
 limit 2
-</query><query name="TDE Extraction" focus="false" listorder="4" taborder="5" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">fn:doc("/player/alexanderringa.ring.xml"),
+</query><query name="TDE Extraction" focus="false" listorder="4" taborder="5" active="true" database="16288912151872857378" server="8346355397661082885" database-name="" server-name="" mode="xquery">fn:doc("/player/alexanderringa.ring.xml"),
 tde:node-data-extract(doc("/player/alexanderringa.ring.xml"))
 ,
 "\share\git\athlete-db\src\main\ml-schemas\athlete-db.tdex"
 =&gt;replace("\\","/")
 =&gt;xdmp:filesystem-file()
 =&gt;xdmp:unquote()
-=&gt;(function($x) { tde:validate($x/node()) })()</query><query name="SQL" focus="false" listorder="5" taborder="7" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="sql">SELECT p.name, t.name
+=&gt;(function($x) { tde:validate($x/node()) })()</query><query name="SQL" focus="false" listorder="5" taborder="7" active="true" database="16288912151872857378" server="8346355397661082885" database-name="" server-name="" mode="sql">SELECT p.name, t.name
 from AthleteDb.Team t,
 AthleteDb.Player p
 where t.id = p.team
-LIMIT 10</query><query name="Optic" focus="true" listorder="6" taborder="6" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">import module namespace op = "http://marklogic.com/optic" at "/MarkLogic/optic.xqy";
+LIMIT 10</query><query name="Optic" focus="false" listorder="6" taborder="6" active="true" database="16288912151872857378" server="8346355397661082885" database-name="athletedb-content" server-name="athletedb" mode="xquery">import module namespace op = "http://marklogic.com/optic" at "/MarkLogic/optic.xqy";
 
 let $p := op:from-view("AthleteDb", "Player")
 let $t := op:from-view("AthleteDb", "Team")
 return $p=&gt;op:join-inner($t, op:on("team", "id"))
-=&gt;op:limit(10)=&gt;op:result()</query><query name="Instance Optic" focus="false" listorder="7" taborder="4" active="true" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">import module namespace op = "http://marklogic.com/optic" at "/MarkLogic/optic.xqy";
+=&gt;op:limit(10)=&gt;op:result()</query><query name="Instance Optic" focus="false" listorder="7" taborder="4" active="true" database="16288912151872857378" server="8346355397661082885" database-name="" server-name="" mode="xquery">import module namespace op = "http://marklogic.com/optic" at "/MarkLogic/optic.xqy";
 import module namespace ofn= "http://marklogic.com/optic/expression/fn" at "/MarkLogic/optic/optic-fn.xqy";
 import module namespace oxs="http://marklogic.com/optic/expression/xs" at "/MarkLogic/optic/optic-xs.xqy";
 
@@ -71,4 +71,14 @@ let $p := op:from-triples(
    op:pattern($instance, $rdfs("isDefinedBy"), $doc-uri)
   ))
   =&gt;op:where(ofn:contains($instance, oxs:string("Moreno")))
-return $p=&gt;op:result()</query><query name="Query 1" focus="false" listorder="8" taborder="" active="false" database="10773468543421410825" server="4801718746833671453" database-name="athletedb-content" server-name="athletedb" mode="xquery">(//Team)[1 to 10]</query></workspace></export>
+return $p=&gt;op:result()</query><query name="Query 1" focus="false" listorder="8" taborder="8" active="false" database="16288912151872857378" server="8346355397661082885" database-name="" server-name="" mode="xquery">(//Team)[1 to 10]</query><query name="Search" focus="true" listorder="9" taborder="9" active="true" database="11559005008716464882" server="15220876757699439715" database-name="Documents" server-name="App-Services" mode="xquery">let $run-search := function($term) {
+  xdmp:http-get("http://localhost:8400/v1/search?options=athlete-db&amp;amp;q=" || fn:encode-for-uri($term), 
+     &lt;options xmlns="xdmp:http"&gt;
+       &lt;authentication method="digest"&gt;
+         &lt;username&gt;admin&lt;/username&gt;
+         &lt;password&gt;admin&lt;/password&gt;
+       &lt;/authentication&gt;
+     &lt;/options&gt;)[2]
+}
+
+return $run-search('entity-type:Player position:"Right Wing"')</query></workspace></export>
