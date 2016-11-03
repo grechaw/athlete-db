@@ -16,3 +16,8 @@ Running `./gradlew genCode` executes Entity Services methods on the model to gen
 Note there's a property in application.proeprties to set: `codegenDir`
 
 In this step, we see the artifacts created by Entity Services code generation.
+
+
+To get to the next step
+
+`git checkout make-extraction`
