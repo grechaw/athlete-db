@@ -6,8 +6,15 @@ canonical envelopes from source data.
 
 `./gradlew mlReloadModules`
 
-loads the instance converter and harmonizing transformer into the modules database.
+loads the instance converter and harmonizing transformer into the
+modules database.
 
 `./gradlew runExample`
 
+Runs the whole integration job, by invoking your REST transform
+and entity services code, using Tamas'd data as a source and
+the `athletedb-content` database as target.
 
+To get to the next step
+
+`git checkout runtime`
