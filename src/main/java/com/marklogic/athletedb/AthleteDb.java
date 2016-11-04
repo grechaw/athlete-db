@@ -3,6 +3,7 @@ package com.marklogic.athletedb;
 import ch.qos.logback.core.status.Status;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
+import com.marklogic.client.FailedRequestException;
 import com.marklogic.client.datamovement.*;
 import com.marklogic.client.document.ServerTransform;
 import com.marklogic.client.io.DocumentMetadataHandle;
@@ -74,8 +75,12 @@ public class AthleteDb {
         ApplyTransformListener listener = new ApplyTransformListener().withTransform(harmonizer)
                 .withApplyResult(ApplyTransformListener.ApplyResult.IGNORE).onSuccess((dbClient, inPlaceBatch) -> {
                     logger.debug("batch transform SUCCESS");
-                }).onBatchFailure((dbClient, inPlaceBatch, throwable) -> {
-                    logger.error("FAILURE on batch:" + inPlaceBatch.toString() + "\n", throwable);
+                }).onBatchFailure((dbClient, inPlaceBatch, e) -> {
+                    if (e.getMessage().contains("transform extension does not exist")) {
+                        logger.info("Batch failure because data flow hasn't been configured.  Moving on.");
+                    } else {
+                        logger.error("FAILURE on batch.", e);
+                    }
                 });
 
         QueryBatcher queryBatcher =
@@ -91,7 +96,16 @@ public class AthleteDb {
     public static void main(String[] args) throws InterruptedException {
         AthleteDb adb = new AthleteDb();
         adb.loadModel();
-        adb.harmonize();
+        try {
+            adb.harmonize();
+        } catch (FailedRequestException e) {
+            if (e.getMessage().contains("transform extension does not exist")) {
+                logger.info("Looks like harmonize was run before project setup.  Moving on.");
+            }
+            else {
+                throw (e);
+            }
+        }
     }
 
 }
