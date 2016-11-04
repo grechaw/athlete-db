@@ -30,16 +30,25 @@ declare function ph:transform(
 
     (: denormalizing code.  can be in extraction too :)
     let $teamId := xs:integer($body//teamId)
-    let $team := athleteDb:extract-instance-Team(
-            fn:head(cts:search(collection("teams"), cts:json-property-value-query("id", $teamId))))
-    let $_ := map:put($instance, "team", $team)
-    let $_ := map:delete($instance, "teamId")
-    let $doc-insert := function() {
-        xdmp:document-insert(replace($uri, ".json", ".xml"),
-                athleteDb:instance-to-envelope($instance),
-                (xdmp:permission("rest-reader", "read"), xdmp:permission("rest-writer", "insert"), xdmp:permission("rest-writer", "update")),
-                "athlete-envelopes")
-        }
-    let $_ := hof:apply-in(xdmp:database("athletedb-content"), $doc-insert)
-    return document { " " }
+    let $teamDoc := fn:head(cts:search(collection("teams"), cts:json-property-value-query("id", $teamId)))
+    return
+        (
+        if (exists($teamDoc))
+        then
+            let $team := athleteDb:extract-instance-Team($teamDoc)
+            let $_ := map:put($instance, "team", $team)
+            let $_ := map:delete($instance, "teamId")
+            let $doc-insert := function() {
+                xdmp:document-insert(replace($uri, ".json", ".xml"),
+                        athleteDb:instance-to-envelope($instance),
+                        (xdmp:permission("rest-reader", "read"),
+                         xdmp:permission("rest-writer", "insert"),
+                         xdmp:permission("rest-writer", "update")),
+                        "athlete-envelopes")
+                }
+            return hof:apply-in(xdmp:database("athletedb-content"), $doc-insert)
+        else ()
+        ,
+        document { " " }
+        )
 };

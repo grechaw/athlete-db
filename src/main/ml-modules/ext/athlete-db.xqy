@@ -49,7 +49,9 @@ declare function athleteDb:extract-instance-Player(
     =>   es:optional('contractUntil',       if($source-node/player/contractUntil castable as xs:date)
                                             then xs:date($source-node/player/contractUntil)
                                             else ())
-    =>   map:with('marketValue',            xs:long($source-node/player/marketValue))
+    =>   es:optional('marketValue',         if ($source-node/player/marketValue castable as xs:long)
+                                            then xs:long($source-node/player/marketValue)
+                                            else ())
     =>   map:with('teamId',                 athleteDb:extract-instance-Team($source-node/player/teamId))
 };
 
@@ -74,6 +76,25 @@ declare function athleteDb:extract-instance-Team(
     then $instance=>map:with('$ref', $source-node/text())
     (: Otherwise, this source node contains instance data. Populate it. :)
     else
+
+    (:
+    The following code populates the properties of the 'Team'
+    entity type. Ensure that all of the property paths are correct for your
+    source data.  The general pattern is
+    =>map:with('keyName', casting-function($source-node/path/to/data))
+    but you may also wish to convert values
+    =>map:with('dateKeyName',
+          xdmp:parse-dateTime("[Y0001]-[M01]-[D01]T[h01]:[m01]:[s01].[f1][Z]",
+          $source-node/path/to/data/in/the/source))
+    You can also implement lookup functions,
+    =>map:with('lookupKey',
+          cts:search( collection('customers'),
+              string($source-node/path/to/lookup/key))/id
+    or populate the instance with constants.
+    =>map:with('constantValue', 10)
+    The output of this function should structurally match the output of
+    es:model-get-test-instances($model)
+    :)
 
     $instance
     =>   map:with('name',                   xs:string($source-node/team/name))
