@@ -98,6 +98,7 @@ graph uri: http://example.org/AthleteDb-0.0.1</description>
 	      <name>marketValue</name>
 	      <scalar-type>long</scalar-type>
 	      <val>marketValue</val>
+          <nullable>true</nullable>
 	    </column>
 	    <column>
 	      <name>team</name>
@@ -113,7 +114,7 @@ graph uri: http://example.org/AthleteDb-0.0.1</description>
       <vars>
 	<var>
 	  <name>subject-iri</name>
-	  <val>sem:iri(concat("http://example.org/AthleteDb-0.0.1/Team/", fn:encode-for-uri(./id)))</val>
+	  <val>sem:iri(concat("http://example.org/AthleteDb-0.0.1/Team/", fn:encode-for-uri(xs:string(./id))))</val>
 	</var>
       </vars>
       <triples>

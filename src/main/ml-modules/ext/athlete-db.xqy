@@ -49,7 +49,9 @@ declare function athleteDb:extract-instance-Player(
     =>   es:optional('contractUntil',       if($source-node/player/contractUntil castable as xs:date)
                                             then xs:date($source-node/player/contractUntil)
                                             else ())
-    =>   map:with('marketValue',            xs:long($source-node/player/marketValue))
+    =>   es:optional('marketValue',         if ($source-node/player/marketValue castable as xs:long)
+                                            then xs:long($source-node/player/marketValue)
+                                            else ())
     =>   map:with('teamId',                 athleteDb:extract-instance-Team($source-node/player/teamId))
 };
 

@@ -17,7 +17,7 @@
         "team": {"$ref":"#/definitions/Team"}
       },
       "primaryKey": "name",
-      "required":["name","position","nationality","marketValue","team"],
+      "required":["name","position","nationality","team"],
       "rangeIndex":["name","position","teamId"]
     },
     "Team" : {
