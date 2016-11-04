@@ -10,5 +10,5 @@ project:
 
 `git checkout model`
 
-Will take you to the first example.
+Will take you to the first step.
 
