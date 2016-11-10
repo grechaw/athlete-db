@@ -6,7 +6,7 @@
   <xs:element name="nationality" type="xs:string"/>
   <xs:element name="contractUntil" type="xs:date"/>
   <xs:element name="marketValue" type="xs:long"/>
-  <xs:element name="teamId" type="TeamContainerType"/>
+  <xs:element name="team" type="TeamContainerType"/>
   <!--This item is a duplicate and is commented out so as to create a valid artifact.
  <xs:element name="name" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/> 
 -->
@@ -23,12 +23,12 @@
     <xs:sequence minOccurs="0">
       <xs:element ref="name"/>
       <xs:element ref="position"/>
-      <xs:element ref="jerseyNumber"/>
-      <xs:element ref="dateOfBirth"/>
+      <xs:element minOccurs="0" ref="jerseyNumber"/>
+      <xs:element minOccurs="0" ref="dateOfBirth"/>
       <xs:element ref="nationality"/>
       <xs:element minOccurs="0" ref="contractUntil"/>
-      <xs:element ref="marketValue"/>
-      <xs:element ref="teamId"/>
+      <xs:element minOccurs="0" ref="marketValue"/>
+      <xs:element ref="team"/>
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Player" type="PlayerType"/>

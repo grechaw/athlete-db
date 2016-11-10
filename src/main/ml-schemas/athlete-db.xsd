@@ -27,7 +27,7 @@
       <xs:element minOccurs="0" ref="dateOfBirth"/>
       <xs:element ref="nationality"/>
       <xs:element minOccurs="0" ref="contractUntil"/>
-      <xs:element ref="marketValue"/>
+      <xs:element minOccurs="0" ref="marketValue"/>
       <xs:element ref="team"/>
     </xs:sequence>
   </xs:complexType>

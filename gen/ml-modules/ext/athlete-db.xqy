@@ -20,7 +20,7 @@ xquery version "1.0-ml";
  database of your application, and check it into your source control system.
 
  Modification History:
- Generated at timestamp: 2016-10-27T13:15:25.194214-07:00
+ Generated at timestamp: 2016-11-10T13:30:53.265552-08:00
  Persisted by AUTHOR
  Date: DATE
  :)
@@ -104,13 +104,13 @@ declare function athleteDb:extract-instance-Player(
     $instance
     =>   map:with('name',                   xs:string($source-node/name))
     =>   map:with('position',               xs:string($source-node/position))
-    =>   map:with('jerseyNumber',           xs:positiveInteger($source-node/jerseyNumber))
-    =>   map:with('dateOfBirth',            xs:date($source-node/dateOfBirth))
+    =>es:optional('jerseyNumber',           xs:positiveInteger($source-node/jerseyNumber))
+    =>es:optional('dateOfBirth',            xs:date($source-node/dateOfBirth))
     =>   map:with('nationality',            xs:string($source-node/nationality))
     =>es:optional('contractUntil',          xs:date($source-node/contractUntil))
-    =>   map:with('marketValue',            xs:long($source-node/marketValue))
+    =>es:optional('marketValue',            xs:long($source-node/marketValue))
     (: The following property is a local reference.  :)
-    =>   map:with('teamId',                 athleteDb:extract-instance-Team($source-node/teamId))
+    =>   map:with('team',                   athleteDb:extract-instance-Team($source-node/team))
 };
 
 (:~
@@ -198,7 +198,7 @@ declare function athleteDb:instance-to-canonical-xml(
         else
             for $key in map:keys($entity-instance)
             let $instance-property := map:get($entity-instance, $key)
-            where ($key castable as xs:NCName and $key ne "$type")
+            where ($key castable as xs:NCName)
             return
                 typeswitch ($instance-property)
                 (: This branch handles embedded objects.  You can choose to prune

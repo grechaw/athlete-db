@@ -27,11 +27,16 @@ declare function ga:post(
             "Made model from document at ", $model-uri
         },
         (: this converter is saved to temporary location for customization :)
-        xdmp:save($path || "/ml-modules/ext/" || fn:replace($model-uri, "json|xml$", "xqy"), $model=>es:instance-converter-generate() ),
-        xdmp:save($path || "/ml-schemas/" || fn:replace($model-uri, "json|xml$", "tdex"), $model=>es:extraction-template-generate() ),
-        xdmp:save($path || "/ml-modules/options/" || fn:replace($model-uri, "json|xml$", "xml"), $model=>es:search-options-generate()),
-        xdmp:save($path || "/ml-schemas/" || fn:replace($model-uri, "json|xml$", "xsd"), $model=>es:schema-generate()),
-        xdmp:save($path || "/ml-config/databases/content-database" || $index || ".json", $model=>es:database-properties-generate()),
+        xdmp:save($path || "/ml-modules/ext/" || fn:replace($model-uri, "json|xml$", "xqy"), 
+                  $model=>es:instance-converter-generate() ),
+        xdmp:save($path || "/ml-schemas/" || fn:replace($model-uri, "json|xml$", "tdex"), 
+                  $model=>es:extraction-template-generate() ),
+        xdmp:save($path || "/ml-modules/options/" || fn:replace($model-uri, "json|xml$", "xml"), 
+                  $model=>es:search-options-generate()),
+        xdmp:save($path || "/ml-schemas/" || fn:replace($model-uri, "json|xml$", "xsd"), 
+                  $model=>es:schema-generate()),
+        xdmp:save($path || "/ml-config/databases/content-database" || $index || ".json", 
+                  $model=>es:database-properties-generate()),
 
         if ($index gt 1)
         then xdmp:save($path || "/ml-modules/ext/" || "translator" || $index || ".xqy", es:version-translator-generate($model, $models[$index - 1]))

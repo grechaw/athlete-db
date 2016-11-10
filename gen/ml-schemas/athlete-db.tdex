@@ -75,11 +75,13 @@ graph uri: http://example.org/AthleteDb-0.0.1</description>
 	      <name>jerseyNumber</name>
 	      <scalar-type>positiveInteger</scalar-type>
 	      <val>jerseyNumber</val>
+	      <nullable>true</nullable>
 	    </column>
 	    <column>
 	      <name>dateOfBirth</name>
 	      <scalar-type>date</scalar-type>
 	      <val>dateOfBirth</val>
+	      <nullable>true</nullable>
 	    </column>
 	    <column>
 	      <name>nationality</name>
@@ -96,11 +98,12 @@ graph uri: http://example.org/AthleteDb-0.0.1</description>
 	      <name>marketValue</name>
 	      <scalar-type>long</scalar-type>
 	      <val>marketValue</val>
+	      <nullable>true</nullable>
 	    </column>
 	    <column>
-	      <name>teamId</name>
+	      <name>team</name>
 	      <scalar-type>integer</scalar-type>
-	      <val>teamId/Team</val>
+	      <val>team/Team</val>
 	    </column>
 	  </columns>
 	</row>

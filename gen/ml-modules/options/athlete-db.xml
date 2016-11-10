@@ -22,7 +22,7 @@
     </search:range>
   </search:constraint>
   <search:constraint name="teamId">
-    <search:range type="xs:decimal" facet="true">
+    <search:range type="xs:string" facet="true" collation="http://marklogic.com/collation/en">
       <search:path-index xmlns:es="http://marklogic.com/entity-services">//es:instance/Player/teamId</search:path-index>
     </search:range>
   </search:constraint>
@@ -38,7 +38,7 @@
     <search:range type="xs:string" facet="true" collation="http://marklogic.com/collation/en">
       <search:path-index xmlns:es="http://marklogic.com/entity-services">//es:instance/Player/position</search:path-index>
     </search:range>
-    <search:range type="xs:decimal" facet="true">
+    <search:range type="xs:string" facet="true" collation="http://marklogic.com/collation/en">
       <search:path-index xmlns:es="http://marklogic.com/entity-services">//es:instance/Player/teamId</search:path-index>
     </search:range>
   </search:tuples>

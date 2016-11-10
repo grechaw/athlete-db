@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AthleteDb {
 
-    private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
+    private static Logger logger = LoggerFactory.getLogger(AthleteDb.class);
     private DatabaseClient client, stagingCient;
     static Properties props;
 
@@ -72,10 +72,11 @@ public class AthleteDb {
         StructuredQueryDefinition qdef = qb.collection("players");
         DataMovementManager stageMgr = stagingCient.newDataMovementManager();
         ServerTransform harmonizer = new ServerTransform("football-harmonizer");
+
         ApplyTransformListener listener = new ApplyTransformListener().withTransform(harmonizer)
-                .withApplyResult(ApplyTransformListener.ApplyResult.IGNORE).onSuccess((dbClient, inPlaceBatch) -> {
+                .withApplyResult(ApplyTransformListener.ApplyResult.IGNORE).onSuccess( inPlaceBatch -> {
                     logger.debug("batch transform SUCCESS");
-                }).onBatchFailure((dbClient, inPlaceBatch, e) -> {
+                }).onBatchFailure((inPlaceBatch, e) -> {
                     if (e.getMessage().contains("transform extension does not exist")) {
                         logger.info("Batch failure because data flow hasn't been configured.  Moving on.");
                     } else {

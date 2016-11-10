@@ -25,7 +25,7 @@ declare function ph:transform(
 ) as document-node()?
 {
     let $uri := map:get($context, "uri")
-    let $_ := xdmp:log(("Procesing URI " || $uri))
+    let $_ := xdmp:log(("Processing URI " || $uri))
     let $instance := athleteDb:extract-instance-Player($body)
 
     (: denormalizing code.  can be in extraction too :)
